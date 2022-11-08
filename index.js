@@ -24,6 +24,8 @@ async function run() {
     const serviceCollection = client
       .db("ServiceProvider")
       .collection("services");
+
+    const reviewCollection = client.db("ServiceProvider").collection("reviews");
     //   get data
     app.get("/services", async (req, res) => {
       const query = {};
@@ -45,6 +47,26 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const result = await serviceCollection.findOne(query);
       res.send(result);
+    });
+
+    // reviews post to server
+    app.post("/reviews", async (req, res) => {
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    });
+
+    // get review data from server
+    app.get("/reviews", async (req, res) => {
+      let query = {};
+      if (req.query.email) {
+        query = {
+          email: req.query.email,
+        };
+      }
+      const cursor = reviewCollection.find(query);
+      const reviews = await cursor.toArray();
+      res.send(reviews);
     });
   } finally {
   }
