@@ -32,6 +32,13 @@ async function run() {
       res.send(services);
     });
 
+    // post data
+    app.post("/services", async (req, res) => {
+      const order = req.body;
+      const result = await serviceCollection.insertOne(order);
+      res.send(result);
+    });
+
     // get specific data
     app.get("/services/:id", async (req, res) => {
       const id = req.params.id;
