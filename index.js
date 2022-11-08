@@ -59,11 +59,20 @@ async function run() {
     // get review data from server
     app.get("/reviews", async (req, res) => {
       let query = {};
+      // get via email
       if (req.query.email) {
         query = {
           email: req.query.email,
         };
       }
+
+      //  get via service ID
+      if (req.query.serviceId) {
+        query = {
+          serviceId: req.query.serviceId,
+        };
+      }
+
       const cursor = reviewCollection.find(query);
       const reviews = await cursor.toArray();
       res.send(reviews);
