@@ -127,6 +127,7 @@ async function run() {
 
     // //for  getting specific service review data from server
     app.get("/service/reviews", async (req, res) => {
+      let query = {};
       //  get via service ID
       if (req.query.serviceId) {
         query = {
